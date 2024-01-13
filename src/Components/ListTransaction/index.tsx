@@ -6,12 +6,21 @@ import {
   StyleSheet,
   TouchableOpacityProps,
 } from "react-native";
+import { Theme } from "../../Styles/color";
 
 export type CardProps = {
   id: string;
   label: string;
   value: number;
   color: string;
+  category: CategoryProps;
+  type: "expense" | "income"; 
+};
+
+type CategoryProps = {
+  title: string;
+  color: string;
+  percentage: string;
 };
 
 type Props = TouchableOpacityProps & {
@@ -20,18 +29,18 @@ type Props = TouchableOpacityProps & {
 };
 
 export function ListTransaction({ data, selected, ...rest }: Props) {
+  const amountTextColor = data.type === "expense" ? Theme.colors.expense : Theme.colors.income;
+  
   return (
-    <TouchableOpacity
-      style={[
-        styles.container,
-        { borderColor: selected ? data.color : "transparent" },
-        { backgroundColor: data.color },
-      ]}
-      {...rest}
-    >
-      <Text style={styles.title}>{data.label}</Text>
+    <TouchableOpacity style={styles.container} {...rest}>
+      <View style={[styles.tag, { backgroundColor: data.color }]} />
 
-      <Text style={styles.amount}>
+      <View style={styles.text}>
+        <Text style={styles.titleCategory}>{data.category.title}</Text>
+        <Text style={styles.title}>{data.label}</Text>
+      </View>
+
+      <Text style={[styles.amount, { color: amountTextColor }]}>
         {data.value.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
@@ -43,22 +52,39 @@ export function ListTransaction({ data, selected, ...rest }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
-    margin:10,
-    alignItems: "center",
-    justifyContent: "space-between",
-    flex: 1,
+    width: "100%",
+    height: 80,
+    marginBottom: 16,
     flexDirection: "row",
-    height: 40,
+    alignItems: "center",
+    backgroundColor: Theme.colors.primaryDark,
+    overflow: "hidden",
+    borderWidth: 4,
+    borderRadius: 8,
+  },
+  tag: {
+    width: 10,
+    height: 80,
+    marginRight: 16,
+  },
+  text: {
+    flex: 1,
     padding: 10,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    marginBottom: 10,
   },
   title: {
-    color: "#ffffff",
+    flex: 1,
+    fontWeight: "bold",
+    fontSize: 16,
+    color: Theme.colors.white,
+  },
+  titleCategory: {
+    flex: 1,
+    fontWeight: "bold",
+    fontSize: 12,
+    color: Theme.colors.light,
   },
   amount: {
-    color: "#ffffff",
+    marginRight: 16,
+    color: Theme.colors.white,
   },
 });
