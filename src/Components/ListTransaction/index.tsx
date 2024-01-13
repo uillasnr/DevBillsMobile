@@ -44,12 +44,13 @@ export function ListTransaction({ data, selected, ...rest }: Props) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
+    margin:10,
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
     flexDirection: "row",
     height: 40,
-    paddingHorizontal: 10,
+    padding: 10,
     backgroundColor: "#fff",
     borderRadius: 10,
     marginBottom: 10,
