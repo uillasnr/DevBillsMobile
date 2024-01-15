@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, ScrollView } from "react-native";
+import { View, StyleSheet, FlatList, ScrollView, Text } from "react-native";
 import { VictoryPie, VictoryTooltip } from "victory-native";
 import { Theme } from "../../Styles/color";
 import { EXPENSES } from "../../utils/expenses";
-import { CardProps, CardTransaction } from "../CardTransaction";
-import { InputPicker, MonthsProps } from "../../InputPicker";
-import { ListTransaction } from "../ListTransaction";
+import { CardProps } from "../ListTransaction";
+import { InputPicker, MonthsProps } from "../../FilterMonth";
+import { ListCategory } from "../ListCategory";
 import Balance from "../Balance";
+import { CATEGORIES } from "../../utils/category";
 
 export default function CategoriesPieChart() {
   const [data, setData] = useState<CardProps[]>([]);
@@ -18,12 +19,13 @@ export default function CategoriesPieChart() {
   }
 
   useEffect(() => {
-    setData(EXPENSES[month]);
+    setData(CATEGORIES[month]);
   }, [month]);
   return (
     <ScrollView style={styles.container}>
-      <InputPicker onValueChange={setMonth} selectedValue={month} />
+     {/*  <InputPicker onValueChange={setMonth} selectedValue={month} /> */}
       <Balance />
+      <Text style={styles.text}>Despesas por categoria</Text>
       <View style={styles.chart}>
         <VictoryPie
           data={data}
@@ -63,8 +65,8 @@ export default function CategoriesPieChart() {
         />
       </View>
 
-      {EXPENSES[month].map((item) => (
-        <ListTransaction
+      {CATEGORIES[month].map((item) => (
+        <ListCategory
           key={item.id}
           data={item}
           selected={selected === item.id}
@@ -86,7 +88,8 @@ const styles = StyleSheet.create({
     height: 290,
   },
   text: {
-    fontSize: 25,
+    fontSize: 15,
+    marginLeft: 10,
     fontWeight: "bold",
     color: Theme.colors.white,
   },
